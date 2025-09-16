@@ -6,6 +6,9 @@ from io import BytesIO
 from docx import Document
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+import requests
+
+API_BASE = "http://127.0.0.1:8000/api"
 
 # --- Logo in Sidebar ---
 st.sidebar.image("images/purplewave-logo.jpg", use_container_width=True)
@@ -14,7 +17,24 @@ st.sidebar.image("images/purplewave-logo.jpg", use_container_width=True)
 st.sidebar.title("QA Assistant Platform")
 
 # --- Project Selection ---
-project = st.sidebar.selectbox("Select Your Team", ["PW Appraisal", "PW Field Tool", "PW CRM", "PW Accounting Service"])
+# --- Project Selection ---
+st.sidebar.subheader("Select Your Team")
+
+try:
+    response = requests.get(f"{API_BASE}/teams/")
+    if response.status_code == 200:
+        teams = response.json()
+        team_options = {team["name"]: team["id"] for team in teams}
+        project_name = st.sidebar.selectbox("Available Teams", list(team_options.keys()))
+        selected_team_id = team_options[project_name]
+    else:
+        st.sidebar.error("⚠️ Could not fetch teams")
+        project_name = None
+        selected_team_id = None
+except Exception as e:
+    st.sidebar.error(f"⚠️ API Error: {e}")
+    project_name = None
+    selected_team_id = None
 
 # --- Tabs ---
 tab = st.sidebar.radio("Navigation", ["Test Cases", "Test Plan"])
