@@ -14,7 +14,7 @@ API_BASE = "http://127.0.0.1:8000/api"
 st.sidebar.image("images/purplewave-logo.jpg", use_container_width=True)
 
 # --- App Title ---
-st.sidebar.title("QA Assistant Platform")
+st.sidebar.title("PW QA Assistant Platform")
 
 # --- Project Selection ---
 # --- Project Selection ---
@@ -53,8 +53,9 @@ if "test_plan" not in st.session_state:
 # --- Test Cases Tab ---
 if tab == "Test Cases":
     st.title("Test Case Generator")
-
-    user_story = st.text_area("User Story *", key="user_story")
+    st.write("Generate test cases from user story")
+    user_story = st.text_input("Story Title *", key="story_title")
+    description = st.text_area("Description *", key="description")
     acceptance_criteria = st.text_area("Acceptance Criteria *", key="acceptance_criteria")
 
     error_placeholder = st.empty()  # placeholder for error
@@ -215,7 +216,7 @@ st.markdown(
     """
     <hr style="margin-top: 50px; margin-bottom: 10px;">
     <div style="text-align: center; color: grey; font-size: 14px;">
-        © 2025 QA Assistant Platform. Built with ❤️ by Team 4
+        © 2025 QA Assistant Platform. Built with ❤️ by Team 3
     </div>
     """,
     unsafe_allow_html=True
